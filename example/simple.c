@@ -8,6 +8,8 @@
  * tokens is predictable.
  */
 
+//for commit//
+
 static const char *JSON_STRING =
 	"{\"user\": \"johndoe\", \"admin\": false, \"uid\": 1000,\n  "
 	"\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";
@@ -33,7 +35,7 @@ int main() {
 		return 1;
 	}
 
-	/* Assume the top-level element is an object */
+//for commit	/* Assume the top-level element is an object */
 	if (r < 1 || t[0].type != JSMN_OBJECT) {
 		printf("Object expected\n");
 		return 1;
