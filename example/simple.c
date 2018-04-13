@@ -35,7 +35,7 @@ int main() {
 		return 1;
 	}
 
-//for commit	/* Assume the top-level element is an object */
+/* Assume the top-level element is an object */
 	if (r < 1 || t[0].type != JSMN_OBJECT) {
 		printf("Object expected\n");
 		return 1;
