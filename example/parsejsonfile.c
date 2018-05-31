@@ -7,7 +7,7 @@
 void jsmn_init(jsmn_parser *parser);
 int jsmn_parse(jsmn_parser *parser, const char *js, size_t len, jsmntok_t *tokens, unsigned int num_tokens);
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s);
-char * ReadJsonFile(const char * fileName);
+char * ReadJsonFile(const char * filename);
 // char *read_string_from_console();
 void printall(const char *json, jsmntok_t *t, int tok_count);
 void printkeys(const char *json, jsmntok_t *t, int tok_count);
@@ -19,15 +19,15 @@ int main() {
 	int r;
 	jsmn_parser p;
 	jsmntok_t t[128]; /* We expect no more than 128 tokens */
-	char  fileName[20] = "data.json";
+	char  filename[20] = "data.json";
 
 	jsmn_init(&p);
 
 	printf("Insert a file Name: ");
-	// scanf("%s", fileName);
-	// strncpy(fileName, "data.json", 20);
+	// scanf("%s", filename);
+	// strncpy(filename, "data.json", 20);
 
-	char * JSON_STRING = ReadJsonFile(fileName);
+	char * JSON_STRING = ReadJsonFile(filename);
 	//	printf("%s\n",JSON_STRING);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t) / sizeof(t[0]));
 
@@ -87,10 +87,11 @@ int main() {
 	int keyarrays[128], keyamount;
 	keyamount = findkeys(JSON_STRING, t, r, keyarrays);
 	printf("Number of Keys = %d\n", keyamount);
-	for(int k = 0; k < keyamount; k++) {
+	int k = 0;
+	for(k = 0; k < keyamount; k++) {
 		printf("--> %d\n", keyarrays[k]);
 	}
-	
+
 	printvalues(JSON_STRING, t, r, keyarrays);
 
 	return EXIT_SUCCESS;
@@ -104,7 +105,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
-char * ReadJsonFile(const char * fileName) {
+char * ReadJsonFile(const char * filename) {
 	FILE *fp = fopen(filename, "r");
 	char *retstr - (char *)malloc(sizeof(char));
 
@@ -121,7 +122,7 @@ char * ReadJsonFile(const char * fileName) {
 			temp[strlen(temp)-1] = '\0';
 
 			retstr = (char *)realloc(retstr, strlen(retstr)+strlen(temp));
-			strcat(reststr, temp);
+			strcat(retstr, temp);
 		}
 		fclose(fp);
 	}
@@ -182,7 +183,7 @@ void printvalues(const char *json, jsmntok_t *t, int tok_count, int *keys) {
 	int j = 0;
 	printf("======== All Values ========");
 	for(j = 0; j < tok_count; j++) {
-		printf("%.*s : %s*s\n", t[keys[j]].end = t[keys[j]].start, json + t[keys[j]].start, t[keys[j]+1].end - t[keys[j]+1].start, json + t[keys[j]+1].start);
+		printf("%.*s : %.*s\n", t[keys[j]].end = t[keys[j]].start, json + t[keys[j]].start, t[keys[j]+1].end - t[keys[j]+1].start, json + t[keys[j]+1].start);
 	}
 }
 
