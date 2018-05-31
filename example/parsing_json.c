@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "jsmn.h"
+#define MAX_SIZE 1024
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	if (tok->type == JSMN_STRING && (int)strlen(s) == tok->end - tok->start &&
@@ -11,6 +12,7 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
+/*
 char * ReadString(const char * fileName) {
 	char  a[20];
 	char * b;
@@ -30,6 +32,22 @@ char * ReadString(const char * fileName) {
 
 	fclose(f1);
 	return b;
+}
+*/
+
+char *read_string_from_console() {
+	char temp[MAX_SIZE];
+	fgets(temp, MAX_SIZE, stdin);
+	temp[strlen(temp)-1] = '\0';
+
+	char *retstr = (char *) malloc(strlen(temp));
+	strncpy(retstr, temp, strlen(temp));
+
+	while((fgets(temp, MAX_SIZE, stdin))[0] != '\n') {
+		temp[strlen(temp)-1] = '\0';
+		retstr = (char *)realloc(retstr, strlen(temp));
+		strncpy(retstr+strlen(retstr), temp, strlen(temp));
+	}
 }
 
 void printall(const char *json, jsmntok_t *t, int tok_count) {
