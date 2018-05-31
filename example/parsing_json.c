@@ -12,7 +12,6 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 	return -1;
 }
 
-/*
 char * ReadString(const char * fileName) {
 	char  a[20];
 	char * b;
@@ -33,8 +32,8 @@ char * ReadString(const char * fileName) {
 	fclose(f1);
 	return b;
 }
-*/
 
+/*
 char *read_string_from_console() {
 	char temp[MAX_SIZE];
 	fgets(temp, MAX_SIZE, stdin);
@@ -49,6 +48,7 @@ char *read_string_from_console() {
 		strncpy(retstr+strlen(retstr), temp, strlen(temp));
 	}
 }
+*/
 
 void printall(const char *json, jsmntok_t *t, int tok_count) {
 	int i = 0;
@@ -83,7 +83,8 @@ int main() {
 	jsmn_init(&p);
 
 	printf("Insert a file Name:");
-	scanf("%s", fileName);
+	// scanf("%s", fileName);
+	strncpy(fileName, "data.json", 20);
 
 	char * JSON_STRING = ReadString(fileName);
 	//	printf("%s\n",JSON_STRING);
