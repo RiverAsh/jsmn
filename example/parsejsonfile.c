@@ -224,7 +224,7 @@ int main() {
 // 		}
 		//
 		// else if (jsoneq(JSON_STRING, &t[i], "examples") == 0) {
-		// 	int j;
+			int j;
 		// 	printf("- Exampleis:\n");
 		// 	if (t[i + 1].type != JSMN_ARRAY) {
 		// 		continue; /* We expect groups to be an array of strings */
