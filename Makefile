@@ -43,7 +43,7 @@ simple2_example: example2/simple2.o libjsmn.a
 jsondump: example/jsondump.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
-parsejson: example/parsejson.o libjsmn.a
+parsejson: example/parsejsonfile.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
 clean:
