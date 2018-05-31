@@ -34,10 +34,10 @@ char * ReadString(const char * fileName) {
 	char *retstr;
 	FILE *fp = fopen(fileName, "r");
 
-	if(fp! = NULL) {
+	if(fp != NULL) {
 		char temp[MAX_SIZE];
 		fgets(temp, MAX_SIZE, fp);
-		temp[strlen(temp)-1] = '\0';
+		temp[strlen(temp) - 1] = '\0';
 
 		retstr = (char *)malloc(strlen(temp));
 		strncpy(retstr, temp, strlen(temp));
