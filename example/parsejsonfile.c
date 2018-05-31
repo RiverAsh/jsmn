@@ -172,13 +172,13 @@ int main() {
 
 		else if (jsoneq(JSON_STRING, &t[i], "group") == 0) {
 			/* We may want to do strtol() here to get numeric value */
-			printf("- group: %.*s\n", t[i + 1].end - t[i + 1].start,
-				JSON_STRING + t[i + 1].start);
-			i++;
+// 			printf("- group: %.*s\n", t[i + 1].end - t[i + 1].start,
+// 				JSON_STRING + t[i + 1].start);
+// 			i++;
+//
+// #ifdef DEBUG_MODE
+// #endif
 
-#ifdef DEBUG_MODE
-#endif
-		}
 
 // 		else if (jsoneq(JSON_STRING, &t[i], "url") == 0) {
 // 			/* We may want to do strtol() here to get numeric value */
@@ -224,11 +224,28 @@ int main() {
 // 		}
 		//
 		// else if (jsoneq(JSON_STRING, &t[i], "examples") == 0) {
-			int j;
+			// int j;
 		// 	printf("- Exampleis:\n");
 		// 	if (t[i + 1].type != JSMN_ARRAY) {
 		// 		continue; /* We expect groups to be an array of strings */
 		// 	}
+
+			// for (j = 0; j < t[i + 1].size; j++) {
+			// 	jsmntok_t *g = &t[i + j + 2];
+			// 	printf("  * %.*s\n", g->end - g->start, JSON_STRING + g->start);
+			// }
+			//
+			// i += t[i + 1].size + 1;
+		// }
+//
+// 		else if (jsoneq(JSON_STRING, &t[i], "repository") == 0) {
+			int j;
+//
+			printf("- group:\n");
+//
+			if (t[i + 1].type != JSMN_ARRAY) {
+				continue; /* We expect groups to be an array of strings */
+			}
 
 			for (j = 0; j < t[i + 1].size; j++) {
 				jsmntok_t *g = &t[i + j + 2];
@@ -236,23 +253,7 @@ int main() {
 			}
 
 			i += t[i + 1].size + 1;
-		// }
-//
-// 		else if (jsoneq(JSON_STRING, &t[i], "repository") == 0) {
-// 			int j;
-//
-// 			printf("- Repository:\n");
-//
-// 			if (t[i + 1].type != JSMN_ARRAY) {
-// 				continue; /* We expect groups to be an array of strings */
-// 			}
-//
-// 			for (j = 0; j < t[i + 1].size; j++) {
-// 				jsmntok_t *g = &t[i + j + 2];
-// 				printf("  * %.*s\n", g->end - g->start, JSON_STRING + g->start);
-// 			}
-//
-// 			i += t[i + 1].size + 1;
+		}
 //
 // #ifdef DEBUG_MODE
 // 			printf("Object인 groups의  token은 %d번째입니다", i);
