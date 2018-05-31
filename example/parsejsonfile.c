@@ -9,10 +9,10 @@ int jsmn_parse(jsmn_parser *parser, const char *js, size_t len, jsmntok_t *token
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s);
 char * ReadJsonFile(const char * filename);
 // char *read_string_from_console();
-void printall(const char *json, jsmntok_t *t, int tok_count);
-void printkeys(const char *json, jsmntok_t *t, int tok_count);
-void printvalues(const char *json, jsmntok_t *t, int tok_count, int *keys);
-int findkeys(const char *json, jsmntok_t *t, int tok_count, int *keys);
+void PrintAll(const char *json, jsmntok_t *t, int tok_count);
+void PrintKeys(const char *json, jsmntok_t *t, int tok_count);
+void PrintValues(const char *json, jsmntok_t *t, int tok_count, int *keys);
+int FindKeys(const char *json, jsmntok_t *t, int tok_count, int *keys);
 
 int main() {
 	int i;
@@ -81,18 +81,18 @@ int main() {
 		}
 	}
 
-	printall(JSON_STRING, t, r);
-	printkeys(JSON_STRING, t, r);
+	PrintAll(JSON_STRING, t, r);
+	PrintKeys(JSON_STRING, t, r);
 
 	int keyarrays[128], keyamount;
-	keyamount = findkeys(JSON_STRING, t, r, keyarrays);
+	keyamount = FindKeys(JSON_STRING, t, r, keyarrays);
 	printf("Number of Keys = %d\n", keyamount);
 	int k = 0;
 	for(k = 0; k < keyamount; k++) {
 		printf("--> %d\n", keyarrays[k]);
 	}
 
-	printvalues(JSON_STRING, t, r, keyarrays);
+	PrintValues(JSON_STRING, t, r, keyarrays);
 
 	return EXIT_SUCCESS;
 }
@@ -146,7 +146,7 @@ char *read_string_from_console() {
 }
 */
 
-void printall(const char *json, jsmntok_t *t, int tok_count) {
+void PrintAll(const char *json, jsmntok_t *t, int tok_count) {
 	int i = 0;
 	char typename [5][20] = {"JSMN_UNDEFINED", "JSMN_OBJECT", "JSMN_ARRAY", "JSMN_STRING", "JSMN_PRIMITIVE"};
 	printf("======== All ========");
@@ -160,7 +160,7 @@ void printall(const char *json, jsmntok_t *t, int tok_count) {
 	printf("\n");
 }
 
-void printkeys(const char *json, jsmntok_t *t, int tok_count) {
+void PrintKeys(const char *json, jsmntok_t *t, int tok_count) {
 	int i = 0;
 	int j = 1;
 	printf("======== All Keys ========\n");
@@ -179,7 +179,7 @@ void printkeys(const char *json, jsmntok_t *t, int tok_count) {
 	}
 }
 
-void printvalues(const char *json, jsmntok_t *t, int tok_count, int *keys) {
+void PrintValues(const char *json, jsmntok_t *t, int tok_count, int *keys) {
 	int j = 0;
 	printf("======== All Values ========");
 	for(j = 0; j < tok_count; j++) {
@@ -187,7 +187,7 @@ void printvalues(const char *json, jsmntok_t *t, int tok_count, int *keys) {
 	}
 }
 
-int findkeys(const char *json, jsmntok_t *t, int tok_count, int *keys) {
+int FindKeys(const char *json, jsmntok_t *t, int tok_count, int *keys) {
 	int i = 0;
 	int j = 0;
 	for(i = 1; i < tok_count; i++) {
