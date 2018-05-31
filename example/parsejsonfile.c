@@ -32,7 +32,7 @@ char * ReadString(const char * fileName) {
 	// fclose(f1);
 	// return b;
 	char *retstr;
-	FILE *fp = fpopen(fileName, "r");
+	FILE *fp = fopen(fileName, "r");
 
 	if(fp! = NULL) {
 		char temp[MAX_SIZE];
