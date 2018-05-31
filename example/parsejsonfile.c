@@ -13,24 +13,45 @@ static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
 }
 
 char * ReadString(const char * fileName) {
-	char  a[20];
-	char * b;
-	FILE *f1;
-	f1 = fopen(fileName, "r");
+	// char  a[20];
+	// char * b;
+	// FILE *f1;
+	// f1 = fopen(fileName, "r");
+	//
+	// b = (char *)malloc(sizeof(char));
+	// //a=(char*)malloc(sizeof(char));
+	//
+	// while (1) {
+	// 	fgets(a, sizeof(a), f1);
+	// 	if (feof(f1))break;
+	// 	b = (char*)realloc(b, strlen(b) + strlen(a));
+	// 	//printf("\n%d\n",strlen(a));
+	// 	strncat(b, a, strlen(a));
+	// }
+	//
+	// fclose(f1);
+	// return b;
+	char *retstr;
+	FILE *fp = fpopen(fileName, "r");
 
-	b = (char *)malloc(sizeof(char));
-	//a=(char*)malloc(sizeof(char));
+	if(fp! = NULL) {
+		char temp[MAX_SIZE];
+		fgets(temp, MAX_SIZE, fp);
+		temp[strlen(temp)-1] = '\0';
 
-	while (1) {
-		fgets(a, sizeof(a), f1);
-		if (feof(f1))break;
-		b = (char*)realloc(b, strlen(b) + strlen(a));
-		//printf("\n%d\n",strlen(a));
-		strncat(b, a, strlen(a));
+		retstr = (char *)malloc(strlen(temp));
+		strncpy(retstr, temp, strlen(temp));
+
+		while(!feof(fp)) {
+			fgets(temp, MAX_SIZE, fp);
+			temp[strlen(temp) - 1] = '\0';
+
+			retstr = (char *)realloc(retstr, strlen(retstr) + strlen(temp));
+			strncpy(retstr + strlen(retstr), temp, strlen(temp));
+		}
+		fclose(fp);
 	}
-
-	fclose(f1);
-	return b;
+	return retstr;
 }
 
 /*
