@@ -148,7 +148,7 @@ char *read_string_from_console() {
 
 void printall(const char *json, jsmntok_t *t, int tok_count) {
 	int i = 0;
-	char typename [5][20] = {}"JSMN_UNDEFINED", "JSMN_OBJECT", "JSMN_ARRAY", "JSMN_STRING", "JSMN_PRIMITIVE"};
+	char typename [5][20] = {"JSMN_UNDEFINED", "JSMN_OBJECT", "JSMN_ARRAY", "JSMN_STRING", "JSMN_PRIMITIVE"};
 	printf("======== All ========");
 	for (i = 1; i < tok_count; i++) {
 		#ifdef JSMN_PARENT_LINKS
