@@ -110,7 +110,7 @@ int main() {
 
 	jsmn_init(&p);
 
-	printf("Insert a file Name:");
+	printf("Insert a file Name: ");
 	// scanf("%s", fileName);
 	strncpy(fileName, "data.json", 20);
 
@@ -129,9 +129,9 @@ int main() {
 		return 1;
 	}
 
-#ifdef DEBUG_MODE
-	printf("r의 값은 %d입니다", r);
-#endif
+// #ifdef DEBUG_MODE
+// 	printf("r의 값은 %d입니다", r);
+// #endif
 
 	/* Loop over all keys of the root object */
 	for (i = 1; i < r; i++) {
@@ -143,9 +143,9 @@ int main() {
 				JSON_STRING + t[i + 1].start);
 			i++;
 
-#ifdef DEBUG_MODE
-			printf("User의 token은 %d번째입니다", i);
-#endif
+// #ifdef DEBUG_MODE
+// 			printf("User의 token은 %d번째입니다", i);
+// #endif
 		}
 
 		else if (jsoneq(JSON_STRING, &t[i], "univ") == 0) {
@@ -154,9 +154,9 @@ int main() {
 				JSON_STRING + t[i + 1].start);
 			i++;
 
-#ifdef DEBUG_MODE
-			printf("Admin의 token은 %d번째입니다", i);
-#endif
+// #ifdef DEBUG_MODE
+// 			printf("Admin의 token은 %d번째입니다", i);
+// #endif
 		}
 
 		else if (jsoneq(JSON_STRING, &t[i], "major") == 0) {
@@ -165,9 +165,9 @@ int main() {
 				JSON_STRING + t[i + 1].start);
 			i++;
 
-#ifdef DEBUG_MODE
-			printf("Uid의 token은 %d번째입니다", i);
-#endif
+// #ifdef DEBUG_MODE
+// 			printf("Uid의 token은 %d번째입니다", i);
+// #endif
 		}
 
 		else if (jsoneq(JSON_STRING, &t[i], "group") == 0) {
@@ -266,7 +266,6 @@ int main() {
 				JSON_STRING + t[i].start);
 		}
 	}
-
 
 	printall(JSON_STRING, t, r);
 

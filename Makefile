@@ -10,7 +10,7 @@ libjsmn.a: jsmn.o
 	$(CC) -c $(CFLAGS) $< -o $@
 
 %parsejsonfile.o: %parsejsonfile.c jsmn.h
-	$(CC) $(D_OPTION) -c $(CFLAGS) %< -o $@
+	$(CC) $(D_OPTION) -c $(CFLAGS) $< -o $@
 
 	# ## Add parsejsonfile mode
 	# parse_example: simple_example
