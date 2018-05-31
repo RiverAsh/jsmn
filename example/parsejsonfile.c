@@ -141,9 +141,9 @@ int main() {
 #endif
 		}
 
-		else if (jsoneq(JSON_STRING, &t[i], "keywords") == 0) {
+		else if (jsoneq(JSON_STRING, &t[i], "univ") == 0) {
 			/* We may additionally check if the value is either "true" or "false" */
-			printf("- Keywords: %.*s\n", t[i + 1].end - t[i + 1].start,
+			printf("- univ: %.*s\n", t[i + 1].end - t[i + 1].start,
 				JSON_STRING + t[i + 1].start);
 			i++;
 
@@ -152,9 +152,9 @@ int main() {
 #endif
 		}
 
-		else if (jsoneq(JSON_STRING, &t[i], "description") == 0) {
+		else if (jsoneq(JSON_STRING, &t[i], "major") == 0) {
 			/* We may want to do strtol() here to get numeric value */
-			printf("- Description: %.*s\n", t[i + 1].end - t[i + 1].start,
+			printf("- major: %.*s\n", t[i + 1].end - t[i + 1].start,
 				JSON_STRING + t[i + 1].start);
 			i++;
 
@@ -163,9 +163,9 @@ int main() {
 #endif
 		}
 
-		else if (jsoneq(JSON_STRING, &t[i], "type") == 0) {
+		else if (jsoneq(JSON_STRING, &t[i], "group") == 0) {
 			/* We may want to do strtol() here to get numeric value */
-			printf("- type: %.*s\n", t[i + 1].end - t[i + 1].start,
+			printf("- group: %.*s\n", t[i + 1].end - t[i + 1].start,
 				JSON_STRING + t[i + 1].start);
 			i++;
 
