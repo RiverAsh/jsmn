@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../jsmn.h"
+#include "jsmn.h"
 #define MAX_SIZE 1024
 
 void jsmn_init(jsmn_parser *parser);
@@ -23,7 +23,7 @@ int main() {
 
 	jsmn_init(&p);
 
-	printf("Insert a file Name: ");
+	// printf("Insert a file Name: ");
 	// scanf("%s", filename);
 	// strncpy(filename, "data.json", 20);
 
