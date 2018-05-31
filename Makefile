@@ -9,6 +9,15 @@ libjsmn.a: jsmn.o
 %.o: %.c jsmn.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+%parsejsonfile.o: %parsejsonfile.c jsmn.h
+	$(CC) $(D_OPTION) -c $(CFLAGS) %< -o $@
+
+	# ## Add parsejsonfile mode
+	# parse_example: simple_example
+	# parse_example: D_OPTION = -DEBUG_MODE
+	# %.o: %.c jsmn.h
+	# 	$(CC) $(D_OPTION) -c $(CFLAGS) $< -o $@
+
 test: test_default test_strict test_links test_strict_links
 test_default: test/tests.c
 	$(CC) $(CFLAGS) $(LDFLAGS) $< -o test/$@
@@ -34,7 +43,7 @@ simple2_example: example2/simple2.o libjsmn.a
 jsondump: example/jsondump.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
-parsing_json: example/parsing_json.o libjsmn.a
+parsejson: example/parsejson.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
 clean:
