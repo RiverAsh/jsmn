@@ -35,19 +35,26 @@ char * ReadString(const char * fileName) {
 	FILE *fp = fopen(fileName, "r");
 
 	if(fp != NULL) {
-		char temp[MAX_SIZE];
-		fgets(temp, MAX_SIZE, fp);
-		temp[strlen(temp) - 1] = '\0';
+		char buf1[MAX_SIZE];
+
+		fgets(buf1, MAX_SIZE, fp);
+		buf1[strlen(buf1) - 1] = '\0';
+
+		char *temp = buf1;
 
 		retstr = (char *)malloc(strlen(temp));
 		strncpy(retstr, temp, strlen(temp));
 
 		while(!feof(fp)) {
-			fgets(temp, MAX_SIZE, fp);
-			temp[strlen(temp) - 1] = '\0';
+			char buf2[MAX_SIZE];
 
-			retstr = (char *)realloc(retstr, strlen(retstr) + strlen(temp));
-			strncpy(retstr + strlen(retstr), temp, strlen(temp));
+			fgets(buf2, MAX_SIZE, fp);
+			buf2[strlen(buf2) - 1] = '\0';
+
+			char *temp2 = buf2;
+
+			retstr = (char *)realloc(retstr, strlen(retstr) + strlen(temp2));
+			strncpy(retstr + strlen(retstr), temp2, strlen(temp2));
 		}
 		fclose(fp);
 	}
@@ -173,72 +180,55 @@ int main() {
 #endif
 		}
 
-		else if (jsoneq(JSON_STRING, &t[i], "url") == 0) {
-			/* We may want to do strtol() here to get numeric value */
-			printf("- url: %.*s\n", t[i + 1].end - t[i + 1].start,
-				JSON_STRING + t[i + 1].start);
-			i++;
-#ifdef DEBUG_MODE
-			printf("Uid의 token은 %d번째입니다", i);
-#endif
-		}
-
-		else if (jsoneq(JSON_STRING, &t[i], "frameworks") == 0) {
-			/* We may want to do strtol() here to get numeric value */
-			printf("- Frameworks: %.*s\n", t[i + 1].end - t[i + 1].start,
-				JSON_STRING + t[i + 1].start);
-			i++;
-
-#ifdef DEBUG_MODE
-			printf("Uid의 token은 %d번째입니다", i);
-#endif
-		}
-
-		else if (jsoneq(JSON_STRING, &t[i], "platforms") == 0) {
-			/* We may want to do strtol() here to get numeric value */
-			printf("- Platfroms: %.*s\n", t[i + 1].end - t[i + 1].start,
-				JSON_STRING + t[i + 1].start);
-			i++;
-
-#ifdef DEBUG_MODE
-			printf("Uid의 token은 %d번째입니다", i);
-#endif
-		}
-
-		else if (jsoneq(JSON_STRING, &t[i], "exclude") == 0) {
-			/* We may want to do strtol() here to get numeric value */
-			printf("- Excludes: %.*s\n", t[i + 1].end - t[i + 1].start,
-				JSON_STRING + t[i + 1].start);
-			i++;
-
-#ifdef DEBUG_MODE
-			printf("Uid의 token은 %d번째입니다", i);
-#endif
-		}
-
-		else if (jsoneq(JSON_STRING, &t[i], "examples") == 0) {
-			int j;
-			printf("- Exampleis:\n");
-			if (t[i + 1].type != JSMN_ARRAY) {
-				continue; /* We expect groups to be an array of strings */
-			}
-
-			for (j = 0; j < t[i + 1].size; j++) {
-				jsmntok_t *g = &t[i + j + 2];
-				printf("  * %.*s\n", g->end - g->start, JSON_STRING + g->start);
-			}
-
-			i += t[i + 1].size + 1;
-		}
-
-		else if (jsoneq(JSON_STRING, &t[i], "repository") == 0) {
-			int j;
-
-			printf("- Repository:\n");
-
-			if (t[i + 1].type != JSMN_ARRAY) {
-				continue; /* We expect groups to be an array of strings */
-			}
+// 		else if (jsoneq(JSON_STRING, &t[i], "url") == 0) {
+// 			/* We may want to do strtol() here to get numeric value */
+// 			printf("- url: %.*s\n", t[i + 1].end - t[i + 1].start,
+// 				JSON_STRING + t[i + 1].start);
+// 			i++;
+// #ifdef DEBUG_MODE
+// 			printf("Uid의 token은 %d번째입니다", i);
+// #endif
+// 		}
+//
+// 		else if (jsoneq(JSON_STRING, &t[i], "frameworks") == 0) {
+// 			/* We may want to do strtol() here to get numeric value */
+// 			printf("- Frameworks: %.*s\n", t[i + 1].end - t[i + 1].start,
+// 				JSON_STRING + t[i + 1].start);
+// 			i++;
+//
+// #ifdef DEBUG_MODE
+// 			printf("Uid의 token은 %d번째입니다", i);
+// #endif
+// 		}
+//
+// 		else if (jsoneq(JSON_STRING, &t[i], "platforms") == 0) {
+// 			/* We may want to do strtol() here to get numeric value */
+// 			printf("- Platfroms: %.*s\n", t[i + 1].end - t[i + 1].start,
+// 				JSON_STRING + t[i + 1].start);
+// 			i++;
+//
+// #ifdef DEBUG_MODE
+// 			printf("Uid의 token은 %d번째입니다", i);
+// #endif
+// 		}
+//
+// 		else if (jsoneq(JSON_STRING, &t[i], "exclude") == 0) {
+// 			/* We may want to do strtol() here to get numeric value */
+// 			printf("- Excludes: %.*s\n", t[i + 1].end - t[i + 1].start,
+// 				JSON_STRING + t[i + 1].start);
+// 			i++;
+//
+// #ifdef DEBUG_MODE
+// 			printf("Uid의 token은 %d번째입니다", i);
+// #endif
+// 		}
+		//
+		// else if (jsoneq(JSON_STRING, &t[i], "examples") == 0) {
+		// 	int j;
+		// 	printf("- Exampleis:\n");
+		// 	if (t[i + 1].type != JSMN_ARRAY) {
+		// 		continue; /* We expect groups to be an array of strings */
+		// 	}
 
 			for (j = 0; j < t[i + 1].size; j++) {
 				jsmntok_t *g = &t[i + j + 2];
@@ -246,18 +236,36 @@ int main() {
 			}
 
 			i += t[i + 1].size + 1;
-
-#ifdef DEBUG_MODE
-			printf("Object인 groups의  token은 %d번째입니다", i);
-#endif
-
-		}
+		// }
+//
+// 		else if (jsoneq(JSON_STRING, &t[i], "repository") == 0) {
+// 			int j;
+//
+// 			printf("- Repository:\n");
+//
+// 			if (t[i + 1].type != JSMN_ARRAY) {
+// 				continue; /* We expect groups to be an array of strings */
+// 			}
+//
+// 			for (j = 0; j < t[i + 1].size; j++) {
+// 				jsmntok_t *g = &t[i + j + 2];
+// 				printf("  * %.*s\n", g->end - g->start, JSON_STRING + g->start);
+// 			}
+//
+// 			i += t[i + 1].size + 1;
+//
+// #ifdef DEBUG_MODE
+// 			printf("Object인 groups의  token은 %d번째입니다", i);
+// #endif
+//
+// 		}
 
 		else {
 			printf("Unexpected key: %.*s\n", t[i].end - t[i].start,
 				JSON_STRING + t[i].start);
 		}
 	}
+
 
 	printall(JSON_STRING, t, r);
 
