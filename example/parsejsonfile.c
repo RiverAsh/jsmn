@@ -150,18 +150,18 @@ int main() {
 			i++;
 		}
 
-		else if (jsoneq(JSON_STRING, &t[i], "group") == 0) {
-			int j;
-			printf("- groups:\n");
-			if(t[i+1].type != JSMN_ARRAY) {
-				continue;
-			}
-			for (j = 0; j < t[i+1].size; j++) {
-				jsmntok_t *g = &t[i+j+2];
-				printf(" * %.*s\n", g->end - g->start, JSON_STRING + g->start);
-			}
-			i+= t[i+1].size + 1;
-		}
+		// else if (jsoneq(JSON_STRING, &t[i], "group") == 0) {
+		// 	int j;
+		// 	printf("- groups:\n");
+		// 	if(t[i+1].type != JSMN_ARRAY) {
+		// 		continue;
+		// 	}
+		// 	for (j = 0; j < t[i+1].size; j++) {
+		// 		jsmntok_t *g = &t[i+j+2];
+		// 		printf(" * %.*s\n", g->end - g->start, JSON_STRING + g->start);
+		// 	}
+		// 	i+= t[i+1].size + 1;
+		// }
 
 		else {
 			printf("Unexpected key: %.*s\n", t[i].end - t[i].start, JSON_STRING + t[i].start);
