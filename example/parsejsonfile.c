@@ -145,7 +145,7 @@ void PrintAll(const char *json, jsmntok_t *t, int tok_count) {
 	// }
 
 	for (i = 1; i < tok_count; i++) {
-		printf("[%d] %.*s (size: %d, %d ~ %d,", i, t[i].edn - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end);
+		printf("[%d] %.*s (size: %d, %d ~ %d,", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end);
 		switch(t[i].type) {
 			case 0: strcpy(typename, "JSMN_UNDEFINED"); break;
 			case 1: strcpy(typename, "JSMN_OBJECT"); break;
