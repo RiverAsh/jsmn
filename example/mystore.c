@@ -128,7 +128,7 @@ char * ReadJsonFile(const char * filename) {
 
 	if(fp != NULL) {
 		char temp[MAX_SIZE];
-		fgets(temp, MAX_SIZE, fp);
+	//	fgets(temp, MAX_SIZE, fp);
 		//temp[strlen(temp)-1] = '\0';
 
 		//retstr = (char *)realloc(retstr, strlen(temp)+strlen(retstr));
