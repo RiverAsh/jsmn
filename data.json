@@ -1,6 +1,9 @@
 {
-	"name": "leekangjae",
-	"univ": "HGU",
-	"major": "CSEE",
-	"group": ["Basketball", "Engineering", "Friends"]
+  "name": "jsmn",
+  "univ": "json",
+  "major": "Minimalistic JSON parser/tokenizer in C. It can be easily integrated into resource-limited or embedded projects",
+  "group":
+	[
+    "example/*.c", "example"
+  ]
 }
