@@ -47,7 +47,7 @@ jsondump: example/jsondump.o libjsmn.a
 parsejson: example/parsejsonfile.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
-mymenu: example/mymenu.o libjsmn.a
+mystore: example/mystore.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
 clean:
