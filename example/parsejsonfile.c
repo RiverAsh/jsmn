@@ -133,14 +133,28 @@ char * ReadJsonFile(const char * filename) {
 
 void PrintAll(const char *json, jsmntok_t *t, int tok_count) {
 	int i = 0;
-	char typename [5][20] = {"JSMN_UNDEFINED", "JSMN_OBJECT", "JSMN_ARRAY", "JSMN_STRING", "JSMN_PRIMITIVE"};
+	// char typename [20] = {"JSMN_UNDEFINED", "JSMN_OBJECT", "JSMN_ARRAY", "JSMN_STRING", "JSMN_PRIMITIVE"};
+	char typename [20];
 	printf("======== All ========");
+	// for (i = 1; i < tok_count; i++) {
+	// 	#ifdef JSMN_PARENT_LINKS
+	// 	printf("[%2d] %.*s (size = %d, %d ~ %d, %s) P = %d\n", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end, typename[t[i].type], t[i].parent);
+	// 	#else
+	// 	printf("[%2d] %.*s (size = %d, %d ~ %d, %s)\n", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end, typename[t[i].type]);
+	// 	#endif
+	// }
+
 	for (i = 1; i < tok_count; i++) {
-		#ifdef JSMN_PARENT_LINKS
-		printf("[%2d] %.*s (size = %d, %d ~ %d, %s) P = %d\n", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end, typename[t[i].type], t[i].parent);
-		#else
-		printf("[%2d] %.*s (size = %d, %d ~ %d, %s)\n", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end, typename[t[i].type]);
-		#endif
+		printf("[%d] %.*s (size: %d, %d ~ %d,", i, t[i].edn - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end);
+		switch(t[i].type) {
+			case 0: strcpy(typename, "JSMN_UNDEFINED"); break;
+			case 1: strcpy(typename, "JSMN_OBJECT"); break;
+			case 2: strcpy(typename, "JSMN_ARRAY"); break;
+			case 3: strcpy(typename, "JSMN_STRING"); break;
+			case 4: strcpy(typename, "JSMN_PRIMITIVE"); break;
+			default: break;
+		}
+		printf("%s) \n", typename);
 	}
 	printf("\n");
 }
