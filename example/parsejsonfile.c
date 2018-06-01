@@ -19,12 +19,13 @@ int main() {
 	int r;
 	jsmn_parser p;
 	jsmntok_t t[128]; /* We expect no more than 128 tokens */
-	char  filename[20] = "data.json";
+	// char  filename[20] = "data.json";
+	char  filename[20];
 
 	jsmn_init(&p);
 
-	// printf("Insert a file Name: ");
-	// scanf("%s", filename);
+	printf("Insert a file Name: ");
+	scanf("%s", filename);
 	// strncpy(filename, "data.json", 20);
 
 	char * JSON_STRING = ReadJsonFile(filename);
