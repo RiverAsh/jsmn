@@ -30,7 +30,7 @@ int main() {
 
 	char * JSON_STRING = ReadJsonFile(filename);
 	// printf("%s\n",filename);
-	printf("%s\n",JSON_STRING);
+	printf("JSON_STRING = %s\n",JSON_STRING);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t) / sizeof(t[0]));
 
 	if (r < 0) {
