@@ -9,6 +9,9 @@ libjsmn.a: jsmn.o
 %.o: %.c jsmn.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+%mystore.o: %mystore.c jsmn.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
 %parsejsonfile.o: %parsejsonfile.c jsmn.h
 	# $(CC) $(D_OPTION) -c $(CFLAGS) %< -o $@
 	$(CC) -c $(CFLAGS) $< -o $@

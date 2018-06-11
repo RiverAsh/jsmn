@@ -4,22 +4,26 @@
     {
       "name":"steak",
       "category":"meat",
-      "price":30000
+      "price":30000,
+      "province":"European"
     },
     {
       "name":"pasta",
       "category":"noodle",
-      "price":13000
+      "price":13000,
+      "province":"European"
     },
     {
       "name":"pepperoni",
       "category":"pizza",
-      "price":20000
+      "price":20000,
+      "province":"European"
     },
     {
       "name":"lisotto",
       "category":"rice",
-      "price":10000
+      "price":10000,
+      "province":"European"
     }
   ],
   "Korean":
@@ -27,22 +31,26 @@
     {
       "name":"naengmyeon",
       "category":"noodle",
-      "price":8000
+      "price":8000,
+      "province":"Korean"
     },
     {
       "name":"dolsotbab",
       "category":"rice",
-      "price":11000
+      "price":11000,
+      "province":"Korean"
     },
     {
       "name":"gimchijjigae",
       "category":"stew",
-      "price":80000
+      "price":80000,
+      "province":"Korean"
     },
     {
       "name":"samgyetang",
       "category":"stew",
-      "price":15000
+      "price":15000,
+      "province":"Korean"
     }
   ]
 }
