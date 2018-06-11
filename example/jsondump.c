@@ -11,6 +11,7 @@
  * realloc_it(). If your code has some kind of fallback algorithm if
  * memory can't be re-allocated - use standard realloc() instead.
  */
+
 static inline void *realloc_it(void *ptrmem, size_t size) {
 	void *p = realloc(ptrmem, size);
 	if (!p)  {
