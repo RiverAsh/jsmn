@@ -2,185 +2,233 @@
 #include <stdlib.h>
 #include <string.h>
 #include "jsmn.h"
-#define MAX_SIZE 1024
 
 typedef enum {
-	C_European = 0,
-	C_Korean = 1
+ C_European = 0,
+ C_Korean = 1
 } mycategory_t;
 
 typedef struct {
 	mycategory_t cat;
 	char name[20];
-	char category[20];
+	char category[10];
 	int price;
-	char province[20];
 } mymenu_t;
 
-void PrintAll(const char *json, jsmntok_t *t, int tok_count);
-void jsmn_init(jsmn_parser *parser);
-int jsmn_parse(jsmn_parser *parser, const char *js, size_t len, jsmntok_t *tokens, unsigned int num_tokens);
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s);
-char * ReadJsonFile(const char * filename);
-int makemymenu(const char *json, jsmntok_t *t, int tok_count, mymenu_t *m[]);
-void Printmenu(mymenu_t *m[], int menucount);
+char * ReadStringFile(const char * fileName);
+void PrintAll(const char *json,jsmntok_t *t,int tok_count);
+void PrintMenu(mymenu_t*m[], int count);
+int FindKeys(const char *json, jsmntok_t *t, int tok_count, int * keys);
+void PrintKeys(const char *json, jsmntok_t *t, int tok_count);
+int makemymenu(const char *json, jsmntok_t *t, int r, mymenu_t* m[]);
+int Order(mymenu_t *m[],int count);
+
+void jsmn_init(jsmn_parser *parser);
+int jsmn_parse(jsmn_parser *parser, const char *js, size_t len,jsmntok_t *tokens, unsigned int num_tokens);
 
 int main() {
+	int keyarray[128],keyamount;
 	int i;
 	int r;
+	int menu_count;
 	jsmn_parser p;
 	jsmntok_t t[128]; /* We expect no more than 128 tokens */
-	char  filename[20];
-
 	mymenu_t *mymenu[20];
+
+	for(i = 0; i < 20; i++) {
+		mymenu[i] = (mymenu_t*)malloc(sizeof(mymenu_t));
+	}
+
+	char fileName[20];
 
 	jsmn_init(&p);
 
-	printf("Insert a file Name: ");
-	scanf("%s", filename);
+	printf("Insert a file Name : ");
+	scanf("%s", fileName);
 
-	char * JSON_STRING = ReadJsonFile("mymenu.json");
+	char *JSON_STRING = ReadStringFile(fileName);
 	r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t, sizeof(t) / sizeof(t[0]));
 
-	printf("JSON_STRING = %s\n",JSON_STRING);
-
-
-	if (r < 0) {
-		printf("Failed to parse JSON: %d\n", r);
-		return 1;
+	keyamount = FindKeys(JSON_STRING,t,r,keyarray);
+	PrintAll(JSON_STRING,t,r);
+	PrintKeys(JSON_STRING,t,r);
+	printf("Keyamount is %d\n",keyamount);
+	int b=0;
+	for (b=0; b < keyamount; b++) {
+		printf("--> %d\n", keyarray[b]);
 	}
 
-	if (r < 1 || t[0].type != JSMN_OBJECT) {
-		printf("Object expected\n");
-		return 1;
-	}
+	int k;
+	menu_count = makemymenu(JSON_STRING, t, r, mymenu);
+	printf("\n\n\n menu_count : %d\n", menu_count);
 
-	PrintAll(JSON_STRING,  t, r);
-
-	int menucount = makemymenu(JSON_STRING, t, r, mymenu);
-	Printmenu(mymenu, menucount);
-
+	PrintMenu(mymenu, menu_count);
+	Order(mymenu, menu_count);
 	return EXIT_SUCCESS;
 }
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
-	if (tok->type == JSMN_STRING && (int)strlen(s) == tok->end - tok->start &&
-		strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
+	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start && strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
 		return 0;
 	}
 	return -1;
 }
 
-char * ReadJsonFile(const char * filename) {
-	FILE *fp = fopen(filename, "r");
-	char *retstr = (char *)malloc(sizeof(char));
+char * ReadStringFile(const char * fileName) {
+	char a[20];
+	char *b;
+	FILE *f1;
+	f1 = fopen(fileName, "r");
 
-	if(fp != NULL) {
-		char temp[MAX_SIZE];
+	b = (char*)malloc(sizeof(char));
+	//a = (char*)malloc(sizeof(char));
 
-		while(fgets(temp, MAX_SIZE, fp) != NULL) {
-
-			retstr = (char *)realloc(retstr, strlen(retstr)+strlen(temp));
-			strcat(retstr, temp);
+	while(1){
+	  fgets(a, sizeof(a), f1);
+		if(feof(f1)) {
+			break;
 		}
-		fclose(fp);
+
+	  b = (char*)realloc(b, strlen(b)+strlen(a));
+	  //printf("\n%d\n", strlen(a));
+	  strncat(b, a, strlen(a));
 	}
-	return retstr;
-}
 
-int makemymenu(const char *json, jsmntok_t *t, int tok_count, mymenu_t *m[]) {
-	int i = 0;
-	int j = 0;
-	for (i = 1; i < tok_count; i++) {
-		if (jsoneq(json, &t[i], "name") == 0) {
-			printf("- name : %.*s\n", t[i+1].end - t[i+1].start, json + t[i+1].start);
-			strncpy(m[j]->name, json + t[i+1].start, t[i+1].end - t[i+1].start);
-			i++;
-		}
-		else if (jsoneq(json, &t[i], "category") == 0) {
-			printf("- category : %.*s\n", t[i+1].end - t[i+1].start, json + t[i+1].start);
-			strncpy(m[j]->category, json + t[i+1].start, t[i+1].end - t[i+1].start);
-			i++;
-		}
-		else if (jsoneq(json, &t[i], "price") == 0) {
-			printf("- price : %.*s\n", t[i+1].end - t[i+1].start, json + t[i+1].start);
-			char price[20];
-			strncpy(price, json + t[i+1].start, t[i+1].end - t[i+1].start);
-			m[j]->price = atoi(price);
-			i++;
-		}
-//		else if (jsoneq(json, &t[i], "province") == 0) {
-			else{
-				printf("%.*s\n", t[i].end - t[i].start, json);
-
-			printf("province ok\n");
-	//		if (jsoneq(json, &t[i+1], "European") == 0) {
-			if (1) {
-				printf("- province : European\n");
-				// printf("- province : %.*s\n", t[i+1].end - t[i+1].start, json + t[i+1].start);
-				m[j]->cat = 0;
-				strncpy(m[j]->province, json + t[i+1].start, t[i+1].end - t[i+1].start);
-			}
-			else {
-				printf("- province : Korean\n");
-				// printf("- province : %.*s\n", t[i+1].end - t[i+1].start, json + t[i+1].start);
-				m[j]->cat = 1;
-				strncpy(m[j]->province, json + t[i+1].start, t[i+1].end - t[i+1].start);
-			}
-			printf("\n");
-			i++;
-			j++;
-		}
-
-	}
-	return j;
+	fclose(f1);
+	return b;
 }
 
 void PrintAll(const char *json, jsmntok_t *t, int tok_count) {
 	int i = 0;
-	// char typename [20] = {"JSMN_UNDEFINED", "JSMN_OBJECT", "JSMN_ARRAY", "JSMN_STRING", "JSMN_PRIMITIVE"};
-	char typename [20];
-	printf("======== All ========");
-	// for (i = 1; i < tok_count; i++) {
-	// 	#ifdef JSMN_PARENT_LINKS
-	// 	printf("[%2d] %.*s (size = %d, %d ~ %d, %s) P = %d\n", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end, typename[t[i].type], t[i].parent);
-	// 	#else
-	// 	printf("[%2d] %.*s (size = %d, %d ~ %d, %s)\n", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end, typename[t[i].type]);
-	// 	#endif
-	// }
+	char t_type[20];
+	for(i = 1; i < tok_count; i++) {
+		printf("[%d] %.*s (size: %d, %d~%d,", i, t[i].end-t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end);
 
-	for (i = 1; i < tok_count; i++) {
-		printf("[%d] %.*s (size: %d, %d ~ %d,", i, t[i].end - t[i].start, json + t[i].start, t[i].size, t[i].start, t[i].end);
 		switch(t[i].type) {
-			case 0: strcpy(typename, "JSMN_UNDEFINED"); break;
-			case 1: strcpy(typename, "JSMN_OBJECT"); break;
-			case 2: strcpy(typename, "JSMN_ARRAY"); break;
-			case 3: strcpy(typename, "JSMN_STRING"); break;
-			case 4: strcpy(typename, "JSMN_PRIMITIVE"); break;
+			case 0: strcpy(t_type,"JSMN_UNDEFIEND"); break;
+			case 1: strcpy(t_type,"JSMN_OBJECT"); break;
+			case 2: strcpy(t_type,"JSMN_ARRAY"); break;
+			case 3: strcpy(t_type,"JSMN_STRING"); break;
+			case 4: strcpy(t_type,"JSMN_PRIMITIVE"); break;
 			default: break;
 		}
-		printf("%s) \n", typename);
+
+		printf("%s) \n", t_type);
 	}
-	printf("\n");
 }
 
-void Printmenu(mymenu_t *m[], int menucount) {
+void PrintMenu(mymenu_t*m[], int count) {
 	int i = 0;
-	printf("====== Menu List ======\n");
-
-	for (i = 0; i < menucount; i++) {
-		printf("Menu No.%d\n", i + 1);
-
-		if(m[i]->cat == 0) {
-			printf("Province: European Food\n");
-		}
-		else {
-			printf("Province: Korean Food\n");
+	for(i = 0; i < count; i++) {
+		switch(m[i]->cat) {
+			case 0: printf("- European\n"); break;
+			case 1: printf("- Korean\n"); break;
 		}
 
-		printf("menu name: %s\n", m[i]->name);
-		printf("menu price: %d\n", m[i]->price);
-		printf("menu category: %s\n", m[i]->category);
+		printf("- name  : %s\n", m[i]->name);
+		printf("- area  : %s\n", m[i]->category);
+		printf("- price : %d\n", m[i]->price);
 		printf("\n");
 	}
+}
+
+int FindKeys(const char *json, jsmntok_t *t, int tok_count, int * keys) {
+	int i, j = 0;
+	for (i = 1; i < tok_count; i++) {
+		if (t[i].size >= 1 && t[i].type == 3) {
+			keys[j++] = i;
+		}
+	}
+	return j;
+}
+
+void PrintKeys(const char *json, jsmntok_t *t, int tok_count) {
+	int i, j = 0;
+	printf("********All Keys*******\n");
+	for (i = 1; i < tok_count; i++) {
+		if (t[i].size < 1 || t[i].type != 3) {
+			continue;
+		}
+		else {
+			j++;
+			printf("\n[%d] %.*s (%d)", j, t[i].end - t[i].start, json + t[i].start, i);
+		}
+	}
+	puts("");
+}
+
+int makemymenu(const char *json, jsmntok_t *t, int r, mymenu_t* m[]) {
+	int size = 0;
+	int i = 0, j = 0, menu_count = 0;
+	int type = 0;
+	char price_int[20];
+
+  for (i = 1; i < r; i++) {
+    if (t[i+1].type == 2) {
+			if (!strncmp("European", json + t[i].start, t[i].end - t[i].start)){
+				type=0;
+			}
+			else if (!strncmp("Korean", json + t[i].start, t[i].end-t[i].start)){
+				type=1;
+			}
+			else {
+				type =0;
+			}
+
+			size = t[i+1].size;
+
+			i += 4;
+
+      for (j = menu_count; j < menu_count + size; i += 3, j++) {
+				m[j]->cat = type;
+        strncpy(m[j]->name, json + t[i].start, t[i].end - t[i].start);
+				i += 2;
+        strncpy(m[j]->category, json + t[i].start, t[i].end - t[i].start);
+				i += 2;
+				strncpy(price_int, json + t[i].start, t[i].end - t[i].start);
+       	m[j]->price = atoi(price_int);
+      }
+			i -= 3;
+      menu_count += size;
+		}
+  }
+  return menu_count;
+}
+
+int Order(mymenu_t *m[], int count) {
+	int answer;
+	int receipt = 0;
+	int i = 0;
+
+	while(1) {
+		//ask
+		printf("Would you like to order? (1. Yes  2. No, Pay Bill)\n");
+		scanf("%d", &answer);
+
+		if (answer == 2) {
+			break;
+		}
+
+		while (1) {
+			for (i = 0; i < count; i++) {
+				printf("[%d]\tname : %s\n\t%s\n\t%d Won\n\n", i+1, m[i]->name, m[i]->category, m[i]->price);
+			}
+
+			printf("Select a number of food you want to eat : ");
+			scanf("%d", &answer);
+
+			if (answer < 1 || answer > count) {
+				printf("Type right index please.......\n");
+			}
+			else {
+				break;
+			}
+		}
+
+		receipt += m[answer-1]->price;
+	}
+
+	printf("Your cost is %d Won \n", receipt);
+	return receipt;
 }
