@@ -1,0 +1,31 @@
+{
+  "cars":[
+    {
+      "model" : "Sonata",
+      "maker" : "Hyundai",
+      "year" : 2016,
+      "gas" : "gasoline"
+    },
+
+    {
+      "model" : "AMG-C63",
+      "maker" : "Mercedez",
+      "year" : 2015,
+      "gas" : "gasoline"
+    },
+
+    {
+      "model" : "Macan",
+      "maker" : "Porche",
+      "year" : 2017,
+      "gas" : "diesel"
+    },
+
+    {
+      "model" : "Levante",
+      "maker" : "Masseratti",
+      "year" : 2018,
+      "gas" : "diesel"
+    }
+  ]
+}

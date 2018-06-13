@@ -12,6 +12,9 @@ libjsmn.a: jsmn.o
 %mystore.o: %mystore.c jsmn.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+%cars.o: %OSS_21100464.c jsmn.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
 %parsejsonfile.o: %parsejsonfile.c jsmn.h
 	# $(CC) $(D_OPTION) -c $(CFLAGS) %< -o $@
 	$(CC) -c $(CFLAGS) $< -o $@
@@ -51,6 +54,9 @@ parsejson: example/parsejsonfile.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
 mystore: example/mystore.o libjsmn.a
+	$(CC) $(LDFLAGS) $^ -o $@
+
+cars: example/cars.o libjsmn.a
 	$(CC) $(LDFLAGS) $^ -o $@
 
 clean:
